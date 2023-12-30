@@ -19,3 +19,4 @@
       | login | password  | code  |
       | "vasya" | "qwerty123" | "00000" |
       | "vasya" | "qwerty123" | "11111" |
+

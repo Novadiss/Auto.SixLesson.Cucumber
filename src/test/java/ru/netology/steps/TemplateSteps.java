@@ -38,4 +38,5 @@ public class TemplateSteps {
     public void verifyCodeIsInvalid() {
         verificationPage.verifyCodeIsInvalid();
     }
+
 }
