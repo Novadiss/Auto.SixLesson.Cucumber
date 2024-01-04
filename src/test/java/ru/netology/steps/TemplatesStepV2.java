@@ -1,6 +1,5 @@
 package ru.netology.steps;
 
-import com.codeborne.selenide.Selenide;
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Пусть;
 import io.cucumber.java.ru.Тогда;
@@ -19,7 +18,6 @@ public class TemplatesStepV2 {
     private static LoginPage loginPage;
     private static DashboardPage dashboardPage;
     private static VerificationPage verificationPage;
-    private static TransferPage transferPage;
 
     CardInfo firstCardInfo;
     CardInfo secondCardInfo;
@@ -31,11 +29,11 @@ public class TemplatesStepV2 {
         loginPage = open("http://localhost:9999", LoginPage.class);
         verificationPage = loginPage.validLogin(login, password);
         dashboardPage = verificationPage.validVerify("12345");
-//        dashboardPage.verifyIsTransferPage();
     }
 
-    @Когда("когда пользователь переводит {string} рублей с карты с номером 5559 0000 0000 0002 на свою 1 карту с главной страницы")
-    public void transferFromFirstToSecond(String amount, DataHelper.CardInfo cardInfo) {
+    @Когда("когда пользователь переводит 5000 рублей с карты с номером 5559 0000 0000 0002 на свою 1 карту с главной страницы")
+    public void transferFromFirstToSecond() {
+        var amount = 5000;
         firstCardInfo = getFirstCardInfo();
         secondCardInfo = getSecondCardInfo();
         firstCardBalance = dashboardPage.getCardBalance(firstCardInfo);
@@ -45,7 +43,7 @@ public class TemplatesStepV2 {
     }
 
     @Тогда("тогда баланс его 1 карты из списка на главной странице должен стать 15000 рублей")
-    public void actualBalanceFirstCard(DataHelper.CardInfo cardInfo) {
+    public void actualBalanceFirstCard() {
         var expectedBalanceFirstCard = 15_000;
         var actualBalanceFirstCard = dashboardPage.getCardBalance(DataHelper.getFirstCardInfo());
         assertEquals(expectedBalanceFirstCard, actualBalanceFirstCard);
