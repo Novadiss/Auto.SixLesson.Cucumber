@@ -3,7 +3,6 @@ package ru.netology.steps;
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Пусть;
 import io.cucumber.java.ru.Тогда;
-import ru.netology.data.DataHelper;
 import ru.netology.page.DashboardPage;
 import ru.netology.page.LoginPage;
 import ru.netology.page.VerificationPage;
@@ -20,10 +19,8 @@ public class TemplatesStepV2 {
     private static DashboardPage dashboardPage;
     private static VerificationPage verificationPage;
 
-    CardInfo firstCardInfo;
-    CardInfo secondCardInfo;
-    int firstCardBalance;
-    int secondCardBalance;
+    CardInfo transferFrom;
+    CardInfo transferTo;
 
     @Пусть("пользователь залогинен с именем {string} и паролем {string}")
     public void openTransferPage(String login, String password) {
@@ -32,24 +29,33 @@ public class TemplatesStepV2 {
         dashboardPage = verificationPage.validVerify("12345");
     }
 
-    @Когда("когда пользователь переводит {string} рублей с карты с номером {string} на свою 1 карту с главной страницы")
-    public void transferFromFirstToSecond(String amount, String cardNum) {
-        //var amount = 5000;
-        firstCardInfo = getFirstCardInfo();
-        secondCardInfo = getSecondCardInfo();
-        firstCardBalance = dashboardPage.getCardBalance(firstCardInfo);
-        secondCardBalance = dashboardPage.getCardBalance(secondCardInfo);
-        if (Objects.equals(cardNum, "5559 0000 0000 0002")) {
-            var transferPage = dashboardPage.selectCardToTransfer(firstCardInfo);
-            dashboardPage = transferPage.makeValidTransfer(String.valueOf(amount), secondCardInfo);
-        } else {
-            var transferPage = dashboardPage.selectCardToTransfer(secondCardInfo);
-            dashboardPage = transferPage.makeValidTransfer(String.valueOf(amount), firstCardInfo);
+    @Когда("когда пользователь переводит {string} рублей с карты с номером {string} на свою {string} карту с главной страницы")
+    public void transferFromFirstToSecond(String amount, String cardFrom, String cardTo) {
+        if (Objects.equals(cardFrom, "5559 0000 0000 0002")) {
+            transferFrom = getSecondCardInfo();
         }
+        if (Objects.equals(cardFrom, "5559 0000 0000 0001")) {
+            transferFrom = getFirstCardInfo();
+        }
+        if (Objects.equals(cardTo, "1")) {
+            transferTo = getFirstCardInfo();
+        }
+        if (Objects.equals(cardTo, "2")) {
+            transferTo = getSecondCardInfo();
+        }
+        var transferPage = dashboardPage.selectCardToTransfer(transferTo);
+        dashboardPage = transferPage.makeValidTransfer(String.valueOf(amount), transferFrom);
+
     }
 
-    @Тогда("тогда баланс его 1 карты из списка на главной странице должен стать {string} рублей")
-    public void actualBalanceFirstCard(String balance) {
+    @Тогда("тогда баланс его {string} карты из списка на главной странице должен стать {string} рублей")
+    public void actualBalanceFirstCard(String actualCard, String balance) {
+        if (Objects.equals(actualCard, "1")) {
+            transferTo = getFirstCardInfo();
+        }
+        if (Objects.equals(actualCard, "2")) {
+            transferTo = getSecondCardInfo();
+        }
         int expectedBalanceFirstCard = Integer.parseInt(balance);
         var actualBalanceFirstCard = dashboardPage.getCardBalance(getFirstCardInfo());
         assertEquals(expectedBalanceFirstCard, actualBalanceFirstCard);
