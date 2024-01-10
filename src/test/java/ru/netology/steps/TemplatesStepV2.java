@@ -3,17 +3,12 @@ package ru.netology.steps;
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Пусть;
 import io.cucumber.java.ru.Тогда;
-import ru.netology.data.DataHelper;
 import ru.netology.page.DashboardPage;
 import ru.netology.page.LoginPage;
-import ru.netology.page.TransferPage;
 import ru.netology.page.VerificationPage;
-
-import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.netology.data.DataHelper.*;
 
 public class TemplatesStepV2 {
 
@@ -30,12 +25,6 @@ public class TemplatesStepV2 {
 
     @Когда("когда пользователь переводит {string} рублей с карты с номером {string} на свою {string} карту с главной страницы")
     public void transferFromFirstToSecond(String amount, String cardFrom, String cardTo) {
-//        if (Objects.equals(cardFrom, "5559 0000 0000 0002")) {
-//            transferFrom = getSecondCardInfo();
-//        }
-//        if (Objects.equals(cardFrom, "5559 0000 0000 0001")) {
-//            transferFrom = getFirstCardInfo();
-//        }
         var transferPage = dashboardPage.selectCardToTransfer(Integer.parseInt(cardTo) - 1);
         transferPage.makeTransferV1(String.valueOf(amount), String.valueOf(cardFrom));
     }
