@@ -36,6 +36,8 @@ public class DashboardPage {
         var text = cards.findBy(text(cardInfo.getCardNumber().substring(15))).getText();
         return extractBalance(text);
     }
+
+
     public int getCardBalance(int index) {
         var text = cards.get(index).getText();
         return extractBalance(text);

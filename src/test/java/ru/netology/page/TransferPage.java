@@ -31,6 +31,11 @@ public class TransferPage {
         fromInput.setValue(cardInfo.getCardNumber());
         transferButton.click();
     }
+    public void makeTransferV1(String amountToTransfer, String cardInfo) {
+        amountInput.setValue(amountToTransfer);
+        fromInput.setValue(cardInfo);
+        transferButton.click();
+    }
 
     public void findErrorMessage(String expectedText) {
         errorMessage.shouldHave(text(expectedText), Duration.ofSeconds(15)).shouldBe(visible);
