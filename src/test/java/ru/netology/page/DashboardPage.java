@@ -21,9 +21,6 @@ public class DashboardPage {
     public void verifyIsDashboardPage(){
         heading.shouldBe(visible);
     }
-    public void verifyIsTransferPage() {
-        transferHead.shouldBe(visible);
-    }
 
     public TransferPage selectCardToTransfer(DataHelper.CardInfo cardInfo) {
         cards.findBy(attribute("data-test-id", cardInfo.getTestId())).$("button").click();
