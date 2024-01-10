@@ -20,7 +20,6 @@ public class TemplatesStepV2 {
     private static VerificationPage verificationPage;
 
     CardInfo transferFrom;
-    CardInfo transferTo;
 
     @Пусть("пользователь залогинен с именем {string} и паролем {string}")
     public void openTransferPage(String login, String password) {
@@ -37,27 +36,15 @@ public class TemplatesStepV2 {
         if (Objects.equals(cardFrom, "5559 0000 0000 0001")) {
             transferFrom = getFirstCardInfo();
         }
-        if (Objects.equals(cardTo, "1")) {
-            transferTo = getFirstCardInfo();
-        }
-        if (Objects.equals(cardTo, "2")) {
-            transferTo = getSecondCardInfo();
-        }
-        var transferPage = dashboardPage.selectCardToTransfer(transferTo);
+        var transferPage = dashboardPage.selectCardToTransfer(Integer.parseInt(cardTo) - 1);
         dashboardPage = transferPage.makeValidTransfer(String.valueOf(amount), transferFrom);
 
     }
 
     @Тогда("тогда баланс его {string} карты из списка на главной странице должен стать {string} рублей")
     public void actualBalanceFirstCard(String actualCard, String balance) {
-        if (Objects.equals(actualCard, "1")) {
-            transferTo = getFirstCardInfo();
-        }
-        if (Objects.equals(actualCard, "2")) {
-            transferTo = getSecondCardInfo();
-        }
         int expectedBalanceFirstCard = Integer.parseInt(balance);
-        var actualBalanceFirstCard = dashboardPage.getCardBalance(getFirstCardInfo());
+        var actualBalanceFirstCard = dashboardPage.getCardBalance(Integer.parseInt(actualCard) - 1);
         assertEquals(expectedBalanceFirstCard, actualBalanceFirstCard);
     }
 }

@@ -27,8 +27,17 @@ public class DashboardPage {
         return new TransferPage();
     }
 
+    public TransferPage selectCardToTransfer(int index) {
+        cards.get(index).$("button").click();
+        return new TransferPage();
+    }
+
     public int getCardBalance(DataHelper.CardInfo cardInfo) {
         var text = cards.findBy(text(cardInfo.getCardNumber().substring(15))).getText();
+        return extractBalance(text);
+    }
+    public int getCardBalance(int index) {
+        var text = cards.get(index).getText();
         return extractBalance(text);
     }
 
